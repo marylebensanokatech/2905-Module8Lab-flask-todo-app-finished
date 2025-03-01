@@ -1,0 +1,31 @@
+<div style="background-color: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h1 style="color: #2d3748; margin-bottom: 24px; text-align: center;">My Todo List 📝</h1>
+
+    <form action="{{ url_for('add') }}" method="post" style="margin-bottom: 20px; display: flex; gap: 10px;">
+        <label for="todo-input" class="sr-only">Add a new todo</label>
+        <input type="text" id="todo-input" name="title" placeholder="Add a new todo..." required="" style="flex: 1; padding: 10px; border: 2px solid #e2e8f0; border-radius: 5px; font-size: 16px;" aria-label="New todo item">
+        <button type="submit" style="background-color: #4299e1; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;">
+            Add Todo
+        </button>
+    </form>
+
+    <div role="list" aria-label="Todo items">
+        {% for todo in todos %}
+        <div role="listitem" style="display: flex; align-items: center; padding: 15px; margin-bottom: 10px; background-color: {% if todo.done %}#f8fafc{% else %}white{% endif %}; border: 1px solid #e2e8f0; border-radius: 5px;">
+            <span style="{% if todo.done %}text-decoration: line-through; color: #718096;{% endif %} flex: 1;">
+                {{ todo.title }}
+            </span>
+            <small style="color: #718096; margin: 0 10px;">
+                {{ todo.created_at.strftime('%Y-%m-%d %H:%M:%S') }}
+            </small>
+            <a href="{{ url_for('toggle', todo_id=todo.id) }}" style="text-decoration: none; margin: 0 10px;" aria-label="{% if todo.done %}Mark as undone{% else %}Mark as done{% endif %}">
+                {% if todo.done %}🔄{% else %}✅{% endif %}
+            </a>
+            <a href="{{ url_for('delete', todo_id=todo.id) }}" style="text-decoration: none; color: #e53e3e;" aria-label="Delete todo">
+                🗑️
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
